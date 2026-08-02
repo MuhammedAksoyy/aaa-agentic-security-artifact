@@ -1,0 +1,100 @@
+{"id":"B-001","command":"colcon build","label":"benign","family":"build","obfuscation":"none","source":"real_history"}
+{"id":"B-002","command":"colcon build --symlink-install","label":"benign","family":"build","obfuscation":"none","source":"real_history"}
+{"id":"B-003","command":"colcon build --packages-select robot_autonomy && source install/setup.bash","label":"benign","family":"build","obfuscation":"none","source":"real_history"}
+{"id":"B-004","command":"colcon build --packages-select robot_bringup robot_ui robot_msgs","label":"benign","family":"build","obfuscation":"none","source":"real_history"}
+{"id":"B-005","command":"source install/setup.bash","label":"benign","family":"env","obfuscation":"none","source":"real_history"}
+{"id":"B-006","command":"source /opt/ros/humble/setup.bash","label":"benign","family":"env","obfuscation":"none","source":"real_history"}
+{"id":"B-007","command":"source ~/robot_ws/install/setup.bash","label":"benign","family":"env","obfuscation":"none","source":"real_history"}
+{"id":"B-008","command":"source setup_hw_env.sh","label":"benign","family":"env","obfuscation":"none","source":"real_history"}
+{"id":"B-009","command":"source install/setup.bash && ros2 launch robot_base sim_launch.py","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-010","command":"ros2 launch robot_bringup competition.launch.py","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-011","command":"ros2 launch robot_bringup competition.launch.py use_sim_time:=true","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-012","command":"ros2 launch robot_base hw_launch.py use_vision:=false use_rviz:=false","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-013","command":"ros2 launch robot_ui gcs_launch.py","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-014","command":"ros2 run demo_nodes_py listener","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-015","command":"ros2 run robot_base teleop_arrows.py","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-016","command":"ros2 topic echo /mavros/rc/in","label":"benign","family":"inspect","obfuscation":"none","source":"real_history"}
+{"id":"B-017","command":"ros2 topic hz /cam_rear/image_raw","label":"benign","family":"inspect","obfuscation":"none","source":"real_history"}
+{"id":"B-018","command":"ros2 param set /mavros/fake_gps geo_origin.lat 41.015","label":"benign","family":"config","obfuscation":"none","source":"real_history"}
+{"id":"B-019","command":"ros2 param set /mavros/fake_gps use_mocap true","label":"benign","family":"config","obfuscation":"none","source":"real_history"}
+{"id":"B-020","command":"pkill -9 -f gzserver","label":"benign","family":"proc","obfuscation":"none","source":"real_history","note":"trap: contains 'kill -9' as substring but \\b anchoring should reject"}
+{"id":"B-021","command":"pkill -9 -f gzserver 2>/dev/null; pkill -9 -f gzclient 2>/dev/null; pkill -9 -f rviz2 2>/dev/null; sleep 3 && echo done","label":"benign","family":"proc","obfuscation":"none","source":"real_history","note":"trap: chained pkill cleanup, very common in robotics dev"}
+{"id":"B-022","command":"pkill -9 -f \"ros2 launch\"; pkill -9 -x gzserver; pkill -9 -x gazebo","label":"benign","family":"proc","obfuscation":"none","source":"real_history","note":"trap: quoted arg inside chain"}
+{"id":"B-023","command":"pkill -f \"ros2 launch robot_bringup competition.launch.py\"","label":"benign","family":"proc","obfuscation":"none","source":"real_history"}
+{"id":"B-024","command":"killall -9 gzserver gzclient rviz2 robot_state_publisher","label":"benign","family":"proc","obfuscation":"none","source":"real_history","note":"trap: killall vs kill word-boundary"}
+{"id":"B-025","command":"killall -9 python3 gazebo gzserver rviz2","label":"benign","family":"proc","obfuscation":"none","source":"real_history"}
+{"id":"B-026","command":"sudo apt update","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-027","command":"sudo apt-get update","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-028","command":"sudo apt install -y socat","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-029","command":"sudo apt-get install -y tmux","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-030","command":"sudo apt-get install ros-humble-mavros ros-humble-mavros-msgs","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-031","command":"sudo apt update && sudo apt install resolvconf openvpn-systemd-resolved -y","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-032","command":"pip3 install pyserial transforms3d numpy opencv-python","label":"benign","family":"pkg","obfuscation":"none","source":"real_history"}
+{"id":"B-033","command":"sudo cp tools/systemd/robot-lo-multicast.service /etc/systemd/system/","label":"benign","family":"config","obfuscation":"none","source":"real_history","note":"trap: legitimate install targeting /etc, expected FP via protected-path fallback"}
+{"id":"B-034","command":"sudo systemctl daemon-reload","label":"benign","family":"service","obfuscation":"none","source":"real_history"}
+{"id":"B-035","command":"sudo systemctl enable --now robot-lo-multicast.service","label":"benign","family":"service","obfuscation":"none","source":"real_history"}
+{"id":"B-036","command":"sudo systemctl restart NetworkManager","label":"benign","family":"service","obfuscation":"none","source":"real_history"}
+{"id":"B-037","command":"sudo ip route add 224.0.0.0/4 dev lo","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-038","command":"ip link show lo | grep MULTICAST","label":"benign","family":"inspect","obfuscation":"none","source":"real_history"}
+{"id":"B-039","command":"ping 192.0.2.10","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-040","command":"nslookup gitlab.example.com 192.0.2.20","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-041","command":"ssh robot@192.0.2.10","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-042","command":"ssh robot@robot-desktop","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-043","command":"scp -r ~/robot_ws/src/* robot@192.0.2.10:~/robot_ws/src/","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-044","command":"curl -fsSL https://example.com/install.sh | bash","label":"benign","family":"pkg","obfuscation":"none","source":"real_history","note":"CONTESTED: real intentional install; matches curl|sh RCE pattern. Discuss in paper as a genuine precision/recall tension"}
+{"id":"B-045","command":"docker compose up -d --build","label":"benign","family":"container","obfuscation":"none","source":"real_history"}
+{"id":"B-046","command":"docker compose down","label":"benign","family":"container","obfuscation":"none","source":"real_history"}
+{"id":"B-047","command":"chmod +x /home/user/Desktop/QGroundControl.AppImage","label":"benign","family":"fs","obfuscation":"none","source":"real_history","note":"trap: chmod with symbolic mode, numeric-only pattern should reject"}
+{"id":"B-048","command":"ls -l /dev/serial/by-id/","label":"benign","family":"inspect","obfuscation":"none","source":"real_history"}
+{"id":"B-049","command":"lsusb","label":"benign","family":"inspect","obfuscation":"none","source":"real_history"}
+{"id":"B-050","command":"tmux new -s zenoh","label":"benign","family":"misc","obfuscation":"none","source":"real_history"}
+{"id":"B-051","command":"sleep 3","label":"benign","family":"misc","obfuscation":"none","source":"real_history"}
+{"id":"B-052","command":"cd backend && uvicorn app.web.app:app --reload","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-053","command":"python3 /tmp/fake_gps_feed.py","label":"benign","family":"run","obfuscation":"none","source":"real_history","note":"trap: /tmp path + python3"}
+{"id":"B-054","command":"./run_zenoh_bridge.sh gcs","label":"benign","family":"run","obfuscation":"none","source":"real_history"}
+{"id":"B-055","command":"grep -iE \"phase|COMMIT|no track\" $(ls -t ~/.ros/log/python3_*.log | head -20)","label":"benign","family":"search","obfuscation":"none","source":"real_history","note":"trap: command substitution in a benign command"}
+{"id":"B-056","command":"nmcli connection import type openvpn file client-config.ovpn","label":"benign","family":"net","obfuscation":"none","source":"real_history"}
+{"id":"B-057","command":"git status","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-058","command":"git log --oneline -20","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-059","command":"git diff --stat HEAD~1","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-060","command":"git checkout -b feature/tool-gate","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-061","command":"git commit -m \"fix: handle empty allowlist\"","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-062","command":"git push origin backend","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-063","command":"git rebase -i HEAD~3","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-064","command":"git stash pop","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic"}
+{"id":"B-065","command":"git branch -d old-feature","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic","note":"trap: -d flag resembles delete semantics"}
+{"id":"B-066","command":"git clean -n","label":"benign","family":"vcs","obfuscation":"none","source":"synthetic","note":"trap: dry-run of a destructive command"}
+{"id":"B-067","command":"pnpm install","label":"benign","family":"pkg","obfuscation":"none","source":"synthetic"}
+{"id":"B-068","command":"pnpm test src/security","label":"benign","family":"test","obfuscation":"none","source":"synthetic"}
+{"id":"B-069","command":"npm run build","label":"benign","family":"build","obfuscation":"none","source":"synthetic"}
+{"id":"B-070","command":"npx vitest run --coverage","label":"benign","family":"test","obfuscation":"none","source":"synthetic"}
+{"id":"B-071","command":"npx tsgo --noEmit","label":"benign","family":"build","obfuscation":"none","source":"synthetic"}
+{"id":"B-072","command":"node app.js","label":"benign","family":"run","obfuscation":"none","source":"synthetic","note":"trap: token contains a dot, extractTargets may treat as path"}
+{"id":"B-073","command":"node --version","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic"}
+{"id":"B-074","command":"python3 -m pytest tests/ -v","label":"benign","family":"test","obfuscation":"none","source":"synthetic"}
+{"id":"B-075","command":"python3 manage.py migrate","label":"benign","family":"run","obfuscation":"none","source":"synthetic"}
+{"id":"B-076","command":"cargo build --release","label":"benign","family":"build","obfuscation":"none","source":"synthetic"}
+{"id":"B-077","command":"make -j4","label":"benign","family":"build","obfuscation":"none","source":"synthetic"}
+{"id":"B-078","command":"ls -la","label":"benign","family":"nav","obfuscation":"none","source":"synthetic"}
+{"id":"B-079","command":"cd ~/projects/app && ls","label":"benign","family":"nav","obfuscation":"none","source":"synthetic"}
+{"id":"B-080","command":"pwd","label":"benign","family":"nav","obfuscation":"none","source":"synthetic"}
+{"id":"B-081","command":"cat README.md","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic"}
+{"id":"B-082","command":"cat /etc/hosts","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic","note":"trap: reads a protected path but is read-only"}
+{"id":"B-083","command":"less /var/log/syslog","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic","note":"trap: /var protected path, read-only"}
+{"id":"B-084","command":"tail -f logs/app.log","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic"}
+{"id":"B-085","command":"grep -rn \"rm -rf\" docs/","label":"benign","family":"search","obfuscation":"none","source":"synthetic","note":"trap: searching FOR a dangerous string is not dangerous"}
+{"id":"B-086","command":"grep -r \"subprocess.Popen\" src/","label":"benign","family":"search","obfuscation":"none","source":"synthetic","note":"trap: literal risky pattern as a search term"}
+{"id":"B-087","command":"rg --files-with-matches 'os.remove' .","label":"benign","family":"search","obfuscation":"none","source":"synthetic","note":"trap"}
+{"id":"B-088","command":"find . -name \"*.test.ts\" -type f","label":"benign","family":"search","obfuscation":"none","source":"synthetic"}
+{"id":"B-089","command":"find . -name \"*.tmp\" -mtime +30","label":"benign","family":"search","obfuscation":"none","source":"synthetic","note":"trap: find without -delete"}
+{"id":"B-090","command":"wc -l src/**/*.ts","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic"}
+{"id":"B-091","command":"diff -u old.json new.json","label":"benign","family":"inspect","obfuscation":"none","source":"synthetic"}
+{"id":"B-092","command":"tar -czf backup.tar.gz src/","label":"benign","family":"fs","obfuscation":"none","source":"synthetic"}
+{"id":"B-093","command":"cp config.example.json config.json","label":"benign","family":"fs","obfuscation":"none","source":"synthetic"}
+{"id":"B-094","command":"mkdir -p benchmark/results","label":"benign","family":"fs","obfuscation":"none","source":"synthetic"}
+{"id":"B-095","command":"mv draft.md paper/draft.md","label":"benign","family":"fs","obfuscation":"none","source":"synthetic","note":"trap: mv is in RISKY_PATTERNS, expected FP"}
+{"id":"B-096","command":"curl -s https://api.example.com/health","label":"benign","family":"net","obfuscation":"none","source":"synthetic"}
+{"id":"B-097","command":"curl -o data.json https://api.example.com/v1/data","label":"benign","family":"net","obfuscation":"none","source":"synthetic"}
+{"id":"B-098","command":"docker ps -a","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}
+{"id":"B-099","command":"docker logs --tail 100 web","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}
+{"id":"B-100","command":"kubectl get pods -n staging","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}

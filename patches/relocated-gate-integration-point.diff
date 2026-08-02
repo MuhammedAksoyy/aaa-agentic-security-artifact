@@ -1,0 +1,22 @@
+--- a/src/agents/pi-tools.ts
++++ b/src/agents/pi-tools.ts
+@@
++import { wrapToolWithSecurityGate } from "../security/tool-gate.js";
+ import { wrapToolWithBeforeToolCallHook } from "./pi-tools.before-tool-call.js";
+@@
+     normalizeToolParameters(tool, {
+       modelProvider: options?.modelProvider,
+       modelId: options?.modelId,
+     }),
+   );
+-  const withHooks = normalized.map((tool) =>
++  // --- SECURITY TOOL GATE (relocated, Section V-B) -- opt-in via SECURITY_TOOL_GATE=1 ---
++  // Placed at the same universal boundary as the before_tool_call wrapper below, so that
++  // every side-effecting tool is mediated, not just the shell path (Section V-A).
++  // See src/security/tool-gate.ts.
++  const gated = normalized.map((tool) => wrapToolWithSecurityGate(tool));
++  const withHooks = gated.map((tool) =>
+     wrapToolWithBeforeToolCallHook(tool, {
+       agentId,
+       sessionKey: options?.sessionKey,
+       sessionId: options?.sessionId,

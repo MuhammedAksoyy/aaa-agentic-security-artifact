@@ -1,0 +1,35 @@
+--- a/src/node-host/invoke-system-run.ts
++++ b/src/node-host/invoke-system-run.ts
+@@
++import { SecurityInterceptor } from "./SecurityInterceptor.js";
++
+ export async function handleSystemRunInvoke(opts: HandleSystemRunInvokeOptions): Promise<void> {
+   const parsed = await parseSystemRunPhase(opts);
+   if (!parsed) {
+     return;
+   }
+   const policyPhase = await evaluateSystemRunPolicyPhase(opts, parsed);
+   if (!policyPhase) {
+     return;
+   }
+
++  // --- SECURITY GATE (retrofit, Section V-A) ---
++  const securityCheck = await SecurityInterceptor.interceptCommand({
++    runId: policyPhase.runId,
++    cmdText: policyPhase.cmdText,
++    argv: policyPhase.argv,
++    cwd: policyPhase.cwd,
++    env: policyPhase.env,
++  });
++
++  if (!securityCheck.approved) {
++    await sendSystemRunDenied(opts, policyPhase.execution, {
++       reason: "security=deny",
++       message: `SECURITY BLOCK: ${securityCheck.reason}`,
++    });
++    return; // Exit without executing the command.
++  }
++  // --- END SECURITY GATE ---
++
+   await executeSystemRunPhase(opts, policyPhase);
+ }

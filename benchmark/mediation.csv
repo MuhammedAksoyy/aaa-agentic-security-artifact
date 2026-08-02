@@ -1,0 +1,78 @@
+version,tool_id,section,side_effect,effect_type,mediation,gate_mechanism
+upstream-2026.7.2,read,fs,no,read,n/a,
+upstream-2026.7.2,memory_search,memory,no,read,n/a,
+upstream-2026.7.2,memory_get,memory,no,read,n/a,
+upstream-2026.7.2,sessions,sessions,no,read,n/a,owner-only on gateway surface
+upstream-2026.7.2,sessions_list,sessions,no,read,n/a,
+upstream-2026.7.2,sessions_history,sessions,no,read,n/a,
+upstream-2026.7.2,sessions_search,sessions,no,read,n/a,
+upstream-2026.7.2,session_status,sessions,no,read,n/a,
+upstream-2026.7.2,agents_list,agents,no,read,n/a,
+upstream-2026.7.2,agents_wait,sessions,no,internal,n/a,
+upstream-2026.7.2,sessions_yield,sessions,no,internal,n/a,
+upstream-2026.7.2,dismiss_task,sessions,no,internal,n/a,
+upstream-2026.7.2,heartbeat_respond,automation,no,internal,n/a,
+upstream-2026.7.2,ask_user,agents,no,internal,n/a,
+upstream-2026.7.2,get_goal,agents,no,read,n/a,
+upstream-2026.7.2,create_goal,agents,no,internal,n/a,
+upstream-2026.7.2,update_goal,agents,no,internal,n/a,
+upstream-2026.7.2,update_plan,agents,no,internal,n/a,
+upstream-2026.7.2,dashboard,ui,no,internal,n/a,
+upstream-2026.7.2,show_widget,ui,no,internal,n/a,
+upstream-2026.7.2,image,media,no,read/transform,n/a,
+upstream-2026.7.2,exec,runtime,yes,execute,mediated,exec-approvals (default security=deny; approval bound to argv+cwd+agentId+envHash) + HTTP deny
+upstream-2026.7.2,web_fetch,web,yes,network-egress,mediated,global SSRF dispatcher + fetch-guard
+upstream-2026.7.2,write,fs,yes,fs-write,partial,path scoping (workspaceOnly) + HTTP deny (fs_write); no approval on agent loop
+upstream-2026.7.2,edit,fs,yes,fs-write,partial,path scoping only
+upstream-2026.7.2,apply_patch,fs,yes,fs-write,partial,workspaceOnly + HTTP deny; no approval on agent loop
+upstream-2026.7.2,terminal,ui,yes,execute,partial,HTTP deny + owner-only; no approval on agent loop
+upstream-2026.7.2,sessions_send,sessions,yes,cross-session-injection,partial,HTTP deny only
+upstream-2026.7.2,sessions_spawn,sessions,yes,spawn-agent,partial,HTTP deny + sandbox:require option
+upstream-2026.7.2,conversations_list,sessions,yes,external-read-with-server-creds,partial,HTTP deny + owner-only
+upstream-2026.7.2,conversations_send,sessions,yes,irreversible-external-send,partial,HTTP deny + owner-only
+upstream-2026.7.2,conversations_turn,sessions,yes,external-conversation,partial,HTTP deny + owner-only
+upstream-2026.7.2,automations,automation,yes,persistence,partial,HTTP deny + owner-only + control-plane list
+upstream-2026.7.2,gateway,automation,yes,control-plane,partial,HTTP deny + owner-only + control-plane list
+upstream-2026.7.2,nodes,nodes,yes,device-control,partial,HTTP deny + owner-only
+upstream-2026.7.2,computer,nodes,yes,desktop-control,partial,HTTP deny + owner-only
+upstream-2026.7.2,mobile_ui,nodes,yes,cross-app-ui-control,partial,HTTP deny + owner-only
+upstream-2026.7.2,screen,ui,yes,confidentiality-capture,partial,HTTP deny + owner-only
+upstream-2026.7.2,web_search,web,yes,network-egress,partial,guarded fetch; query is exfil channel
+upstream-2026.7.2,x_search,web,yes,network-egress,partial,guarded fetch
+upstream-2026.7.2,process,runtime,yes,execute,unmediated,NOT in HTTP deny; no approval reference
+upstream-2026.7.2,code_execution,runtime,yes,execute,unmediated,NOT in HTTP deny while exec and terminal are; capability-vs-name inconsistency
+upstream-2026.7.2,subagents,sessions,yes,spawn-agent,unmediated,none found
+upstream-2026.7.2,spawn_task,sessions,yes,spawn-agent,unmediated,none found
+upstream-2026.7.2,browser,ui,yes,external-action,unmediated,optional sandbox only; not in any list
+upstream-2026.7.2,canvas,ui,yes,external-action,unmediated,trusted-operator surface per SECURITY.md
+upstream-2026.7.2,message,messaging,yes,irreversible-external-send,unmediated,no approval/ownerOnly/allowlist in message-tool.ts; arbitrary target param
+upstream-2026.7.2,skill_workshop,agents,yes,persistence-code-authoring,unmediated,none found; skills are later-executing code
+upstream-2026.7.2,image_generate,media,yes,external-api+fs-write,unmediated,none found
+upstream-2026.7.2,music_generate,media,yes,external-api+fs-write,unmediated,none found
+upstream-2026.7.2,video_generate,media,yes,external-api+fs-write,unmediated,none found
+upstream-2026.7.2,tts,media,yes,fs-write,unmediated,none found
+fork-2026.03,read,fs,no,read,n/a,
+fork-2026.03,memory_search,memory,no,read,n/a,
+fork-2026.03,memory_get,memory,no,read,n/a,
+fork-2026.03,sessions_list,sessions,no,read,n/a,
+fork-2026.03,sessions_history,sessions,no,read,n/a,
+fork-2026.03,session_status,sessions,no,read,n/a,
+fork-2026.03,agents_list,agents,no,read,n/a,
+fork-2026.03,image,media,no,read/transform,n/a,
+fork-2026.03,exec,runtime,yes,execute,mediated,exec-approvals
+fork-2026.03,web_fetch,web,yes,network-egress,mediated,global SSRF dispatcher
+fork-2026.03,process,runtime,yes,execute,partial,inherits exec path; no independent gate
+fork-2026.03,write,fs,yes,fs-write,partial,path scoping + ACP approval
+fork-2026.03,edit,fs,yes,fs-write,partial,path scoping only
+fork-2026.03,apply_patch,fs,yes,fs-write,partial,ACP approval only
+fork-2026.03,web_search,web,yes,network-egress,partial,guarded fetch
+fork-2026.03,sessions_send,sessions,yes,cross-session-injection,partial,HTTP deny + ACP approval
+fork-2026.03,sessions_spawn,sessions,yes,spawn-agent,partial,HTTP deny + ACP approval + sandbox:require
+fork-2026.03,browser,ui,yes,external-action,partial,optional sandbox
+fork-2026.03,cron,automation,yes,persistence,partial,ownerOnly + HTTP deny
+fork-2026.03,gateway,automation,yes,control-plane,partial,ownerOnly + HTTP deny + ACP approval
+fork-2026.03,subagents,sessions,yes,spawn-agent,unmediated,none found
+fork-2026.03,canvas,ui,yes,external-action,unmediated,trusted-operator surface
+fork-2026.03,message,messaging,yes,irreversible-external-send,unmediated,no gate in message-tool.ts
+fork-2026.03,nodes,nodes,yes,device-control,unmediated,none found
+fork-2026.03,tts,media,yes,fs-write,unmediated,none found
