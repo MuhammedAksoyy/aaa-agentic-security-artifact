@@ -18,10 +18,10 @@ upstream-2026.7.2,create_goal,agents,no,internal,n/a,
 upstream-2026.7.2,update_goal,agents,no,internal,n/a,
 upstream-2026.7.2,update_plan,agents,no,internal,n/a,
 upstream-2026.7.2,dashboard,ui,no,internal,n/a,
-upstream-2026.7.2,show_widget,ui,no,internal,n/a,
+upstream-2026.7.2,show_widget,ui,yes,filesystem-write,unmediated,"unconditional createCanvasDocument disk write (widget-tool.ts:199-206, documents.ts:115-116); pin=true additionally writes to SQLite-backed board (widget-tool.ts:171); no approval gate"
 upstream-2026.7.2,image,media,no,read/transform,n/a,
 upstream-2026.7.2,exec,runtime,yes,execute,mediated,exec-approvals (default security=deny; approval bound to argv+cwd+agentId+envHash) + HTTP deny
-upstream-2026.7.2,web_fetch,web,yes,network-egress,mediated,global SSRF dispatcher + fetch-guard
+upstream-2026.7.2,web_fetch,web,yes,network-egress,partial,"global SSRF dispatcher + fetch-guard (target restriction, not per-invocation approval)"
 upstream-2026.7.2,write,fs,yes,fs-write,partial,path scoping (workspaceOnly) + HTTP deny (fs_write); no approval on agent loop
 upstream-2026.7.2,edit,fs,yes,fs-write,partial,path scoping only
 upstream-2026.7.2,apply_patch,fs,yes,fs-write,partial,workspaceOnly + HTTP deny; no approval on agent loop
@@ -40,7 +40,7 @@ upstream-2026.7.2,screen,ui,yes,confidentiality-capture,partial,HTTP deny + owne
 upstream-2026.7.2,web_search,web,yes,network-egress,partial,guarded fetch; query is exfil channel
 upstream-2026.7.2,x_search,web,yes,network-egress,partial,guarded fetch
 upstream-2026.7.2,process,runtime,yes,execute,unmediated,NOT in HTTP deny; no approval reference
-upstream-2026.7.2,code_execution,runtime,yes,execute,unmediated,NOT in HTTP deny while exec and terminal are; capability-vs-name inconsistency
+upstream-2026.7.2,code_execution,runtime,yes,execute,unmediated,"NOT in HTTP deny while exec and terminal are; capability-vs-name inconsistency; confirmed 4 Aug via source read (extensions/xai/code-execution.ts): delegates to xAI remote API, no local execution, no local sandbox applicable"
 upstream-2026.7.2,subagents,sessions,yes,spawn-agent,unmediated,none found
 upstream-2026.7.2,spawn_task,sessions,yes,spawn-agent,unmediated,none found
 upstream-2026.7.2,browser,ui,yes,external-action,unmediated,optional sandbox only; not in any list
@@ -60,7 +60,7 @@ fork-2026.03,session_status,sessions,no,read,n/a,
 fork-2026.03,agents_list,agents,no,read,n/a,
 fork-2026.03,image,media,no,read/transform,n/a,
 fork-2026.03,exec,runtime,yes,execute,mediated,exec-approvals
-fork-2026.03,web_fetch,web,yes,network-egress,mediated,global SSRF dispatcher
+fork-2026.03,web_fetch,web,yes,network-egress,partial,"global SSRF dispatcher (target restriction, not per-invocation approval)"
 fork-2026.03,process,runtime,yes,execute,partial,inherits exec path; no independent gate
 fork-2026.03,write,fs,yes,fs-write,partial,path scoping + ACP approval
 fork-2026.03,edit,fs,yes,fs-write,partial,path scoping only
