@@ -41,11 +41,13 @@ patches/
                                              (Section V-B)
 
 benchmark/
-  corpus-benign.jsonl       -- 100 benign commands (56 sampled from a real, redacted
-                               shell history from an unrelated robotics project, 44
-                               synthetic for family coverage)
-  corpus-malicious.jsonl    -- 100 malicious commands across 14 threat families
-  corpus-evasion.jsonl      -- 50 evasion variants derived from the malicious set
+  corpus-benign.jsonl       -- 181 benign commands (56 sampled from a real, redacted
+                               shell history from an unrelated robotics project, 125
+                               synthetic, including near-miss pairs that surface-resemble
+                               malicious commands while being safe)
+  corpus-malicious.jsonl    -- 191 malicious commands across 14 threat families, at
+                               least 10 per family
+  corpus-evasion.jsonl      -- 90 evasion variants derived from the malicious set
   mediation.csv             -- raw tool-by-tool classification backing Table VI
                                (side-effecting?, mediated/partial/unmediated, gate
                                mechanism) for both the fork baseline and current
@@ -95,12 +97,15 @@ node ..\aaa-agentic-security-artifact\benchmark\mock-validator.mjs
 node --import tsx ..\aaa-agentic-security-artifact\benchmark\run-d2-latency.mjs
 ```
 
-The reproduced B0--B4 run used the artifact's 250-command corpus (100 benign, 100
-malicious, 50 evasion): B3 obtained FPR 8.0%, TPR 54.7%, F1 0.683, and caught 32/50
-evasion commands. The fresh-install B1/B4 configuration blocked every command
-(FPR/TPR 100%), as expected for an empty allowlist. The D2 raw log records local-analysis,
-HTTP-sidecar, and synthetic-HITL measurements; it is an overhead measurement only and does
-not include human approval time.
+This reproduction predates the corpus's later expansion from 250 to 462 commands (every
+family raised to at least 10 examples; see Table IV in the paper) and used the earlier
+250-command corpus (100 benign, 100 malicious, 50 evasion): B3 obtained FPR 8.0%,
+TPR 54.7%, F1 0.683, and caught 32/50 evasion commands. On the current 462-command corpus
+in this artifact, B3 obtains FPR 6.6%, TPR (all) 43.8%, TPR (non-evasion) 39.8%, precision
+91.1% -- matching Table III. The fresh-install B1/B4 configuration blocked every command
+(FPR/TPR 100%) in both runs, as expected for an empty allowlist. The D2 raw log records
+local-analysis, HTTP-sidecar, and synthetic-HITL measurements; it is an overhead
+measurement only and does not include human approval time.
 
 ### Table VI -- Mediation Completeness
 

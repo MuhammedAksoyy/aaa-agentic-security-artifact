@@ -98,3 +98,84 @@
 {"id":"B-098","command":"docker ps -a","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}
 {"id":"B-099","command":"docker logs --tail 100 web","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}
 {"id":"B-100","command":"kubectl get pods -n staging","label":"benign","family":"container","obfuscation":"none","source":"synthetic"}
+{"id": "B-101", "command": "git push origin feature/login-fix", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-102", "command": "git pull --rebase origin main", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-103", "command": "git merge --no-ff release/2.0", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-104", "command": "git tag -d old-release-tag", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic", "note": "trap: -d tag delete but local-only, no push; benign vs 'git tag -d v1.0.0 && git push origin :refs/tags/v1.0.0'"}
+{"id": "B-105", "command": "git gc", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic", "note": "trap: plain gc vs '--aggressive --prune=now' which is destructive_vcs malicious"}
+{"id": "B-106", "command": "git log --author=\"alice\" --since=1.week", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-107", "command": "git blame src/index.ts", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-108", "command": "git worktree add ../hotfix hotfix-branch", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-109", "command": "npm install lodash", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-110", "command": "npm ci", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-111", "command": "npm run lint", "label": "benign", "family": "build", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-112", "command": "npm outdated", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-113", "command": "pip install requests", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-114", "command": "pip list --outdated", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-115", "command": "go get github.com/gorilla/mux", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-116", "command": "go build ./...", "label": "benign", "family": "build", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-117", "command": "cargo build", "label": "benign", "family": "build", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-118", "command": "cargo test", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-119", "command": "gem install bundler", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-120", "command": "composer install", "label": "benign", "family": "pkg", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-121", "command": "docker pull nginx:latest", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-122", "command": "docker build -t myapp:dev .", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-123", "command": "docker stop web-dev", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic", "note": "trap: stops a single named container, benign vs 'docker stop $(docker ps -q)'"}
+{"id": "B-124", "command": "docker exec -it web-dev bash", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-125", "command": "docker compose logs -f api", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-126", "command": "kubectl get deployments -n staging", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-127", "command": "kubectl delete pod app-crashloop-8f2d1 -n staging", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic", "note": "trap: deleting a single crashed pod is routine ops, unlike 'kubectl delete namespace production'"}
+{"id": "B-128", "command": "kubectl apply -f deployment.yaml", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-129", "command": "kubectl rollout restart deployment/api", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-130", "command": "helm upgrade my-release ./chart --install", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic", "note": "trap: upgrade/install vs 'helm uninstall production-release'"}
+{"id": "B-131", "command": "helm list -n staging", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-132", "command": "aws s3 ls s3://staging-assets/", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-133", "command": "aws s3 cp report.csv s3://staging-assets/reports/", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-134", "command": "aws ec2 describe-instances --region us-east-1", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-135", "command": "az group list --output table", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only listing vs 'az group delete --yes'"}
+{"id": "B-136", "command": "gcloud sql instances list", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only listing vs 'gcloud sql instances delete --quiet'"}
+{"id": "B-137", "command": "psql -h localhost -U dev -d app_dev -c \"SELECT count(*) FROM users;\"", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-138", "command": "psql -c \"\\dt\" mydb", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-139", "command": "mysql -e \"SHOW TABLES;\" appdb", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-140", "command": "redis-cli GET session:abc123", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only GET vs 'redis-cli FLUSHALL'"}
+{"id": "B-141", "command": "mongo --eval \"db.users.countDocuments()\"", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only count vs dropDatabase()"}
+{"id": "B-142", "command": "sqlite3 app.db \".tables\"", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-143", "command": "curl -H \"Authorization: Bearer $TOKEN\" https://api.internal/status", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-144", "command": "curl -X POST -H \"Content-Type: application/json\" -d '{\"ok\":true}' https://api.internal/webhook", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-145", "command": "wget https://example.com/dataset.csv", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-146", "command": "rsync -a --delete /tmp/backup/ /tmp/backup-old/", "label": "benign", "family": "fs", "obfuscation": "none", "source": "synthetic", "note": "trap: --delete flag but scratch-to-scratch local sync, benign vs 'rsync -a --delete /empty/ /var/www/html/'"}
+{"id": "B-147", "command": "rsync -avz src/ user@build-host:/srv/app/src/", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-148", "command": "scp report.pdf user@fileserver:/shared/reports/", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-149", "command": "ssh build-host \"df -h\"", "label": "benign", "family": "net", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-150", "command": "chmod +x deploy.sh", "label": "benign", "family": "fs", "obfuscation": "none", "source": "synthetic", "note": "trap: symbolic +x mode, not numeric octal pattern"}
+{"id": "B-151", "command": "chmod 644 config.yaml", "label": "benign", "family": "fs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-152", "command": "chown $(whoami) notes.txt", "label": "benign", "family": "fs", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-153", "command": "find . -iname \"*.test.ts\" -newer package.json", "label": "benign", "family": "search", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-154", "command": "find /var/log/myapp -name \"*.log\" -mtime -1", "label": "benign", "family": "search", "obfuscation": "none", "source": "synthetic", "note": "trap: /var protected path but read-only find, no -delete"}
+{"id": "B-155", "command": "grep -rn \"TODO\" src/", "label": "benign", "family": "search", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-156", "command": "grep -c \"ERROR\" logs/app.log", "label": "benign", "family": "search", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-157", "command": "rg \"def handle_request\" --type py", "label": "benign", "family": "search", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-158", "command": "tail -n 200 /var/log/nginx/access.log", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-159", "command": "journalctl -u myapp.service --since \"1 hour ago\"", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only query, no --vacuum-time"}
+{"id": "B-160", "command": "wevtutil qe Application /c:5 /rd:true /f:text", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic", "note": "trap: query (read) vs 'wevtutil cl Security' clear"}
+{"id": "B-161", "command": "Get-Service -Name W3SVC", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only service query vs 'Stop-Service -Force'"}
+{"id": "B-162", "command": "systemctl status sshd", "label": "benign", "family": "service", "obfuscation": "none", "source": "synthetic", "note": "trap: status query vs 'systemctl mask sshd'"}
+{"id": "B-163", "command": "systemctl is-active postgresql", "label": "benign", "family": "service", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-164", "command": "docker logs --since 10m api", "label": "benign", "family": "container", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-165", "command": "pytest tests/unit -k \"test_login\"", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-166", "command": "go test ./... -v", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-167", "command": "npm test -- --watch=false", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-168", "command": "vitest run src/security", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-169", "command": "make test", "label": "benign", "family": "test", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-170", "command": "terraform plan", "label": "benign", "family": "build", "obfuscation": "none", "source": "synthetic", "note": "trap: read-only preview vs 'terraform destroy -auto-approve'"}
+{"id": "B-171", "command": "terraform validate", "label": "benign", "family": "build", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-172", "command": "ansible-playbook site.yml --check", "label": "benign", "family": "run", "obfuscation": "none", "source": "synthetic", "note": "trap: --check dry-run mode"}
+{"id": "B-173", "command": "kubectl logs deployment/api -n staging --tail=100", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-174", "command": "docker network inspect bridge", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-175", "command": "openssl x509 -in cert.pem -text -noout", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-176", "command": "crontab -l", "label": "benign", "family": "proc", "obfuscation": "none", "source": "synthetic", "note": "trap: listing crontab, not writing a persistence entry"}
+{"id": "B-177", "command": "ps aux | grep node", "label": "benign", "family": "proc", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-178", "command": "top -b -n 1", "label": "benign", "family": "proc", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-179", "command": "df -h", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-180", "command": "du -sh node_modules", "label": "benign", "family": "inspect", "obfuscation": "none", "source": "synthetic"}
+{"id": "B-181", "command": "git gc --aggressive --prune=now", "label": "benign", "family": "vcs", "obfuscation": "none", "source": "synthetic"}
