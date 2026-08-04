@@ -16,8 +16,11 @@
 // B3: the detector in this artifact (analyzeCommandRisk)
 // B4: B1 OR B3 (layered)
 import { analyzeCommandRisk } from "../src/security/security-hitl.js";
-import { evaluateShellAllowlist } from "../../src/infra/exec-approvals-allowlist.js";
-import { requiresExecApproval } from "../../src/infra/exec-approvals.js";
+// The artifact lives beside the pinned target checkout in this reproduction
+// workspace.  Keep the detector local to the artifact, but import B1 from the
+// pinned OpenClaw source rather than a machine-specific absolute path.
+import { evaluateShellAllowlist } from "../../openclaw-upstream/src/infra/exec-approvals-allowlist.js";
+import { requiresExecApproval } from "../../openclaw-upstream/src/infra/exec-approvals.js";
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";

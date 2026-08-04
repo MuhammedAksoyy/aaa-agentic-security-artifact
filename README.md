@@ -56,6 +56,7 @@ benchmark/
   run-d2-latency.mjs        -- reproduces Table V (latency)
   mock-validator.mjs        -- minimal external validator for the retrofit's HTTP
                                round trip during reproduction (not a security control)
+  d2-reproduction.log       -- raw output of the independent Windows reproduction
 ```
 
 ## Reproducing the results
@@ -80,6 +81,26 @@ applied, plus the mock validator running:
 node benchmark/mock-validator.mjs &
 node --import tsx benchmark/run-d2-latency.mjs
 ```
+
+### Independent Windows reproduction (August 2026)
+
+The artifact was independently re-run beside a pinned checkout of OpenClaw commit
+`fb3d473a73b039251ac8f28297a54d2a89e5d67e`. From that checkout's root, after its
+locked dependencies are installed, run:
+
+```powershell
+node --import tsx ..\aaa-agentic-security-artifact\benchmark\run-b0-b4.mjs
+node ..\aaa-agentic-security-artifact\benchmark\mock-validator.mjs
+# in a second terminal:
+node --import tsx ..\aaa-agentic-security-artifact\benchmark\run-d2-latency.mjs
+```
+
+The reproduced B0--B4 run used the artifact's 250-command corpus (100 benign, 100
+malicious, 50 evasion): B3 obtained FPR 8.0%, TPR 54.7%, F1 0.683, and caught 32/50
+evasion commands. The fresh-install B1/B4 configuration blocked every command
+(FPR/TPR 100%), as expected for an empty allowlist. The D2 raw log records local-analysis,
+HTTP-sidecar, and synthetic-HITL measurements; it is an overhead measurement only and does
+not include human approval time.
 
 ### Table VI -- Mediation Completeness
 
