@@ -20,7 +20,7 @@ upstream-2026.7.2,update_plan,agents,no,internal,n/a,
 upstream-2026.7.2,dashboard,ui,no,internal,n/a,
 upstream-2026.7.2,show_widget,ui,yes,filesystem-write,unmediated,"unconditional createCanvasDocument disk write (widget-tool.ts:199-206, documents.ts:115-116); pin=true additionally writes to SQLite-backed board (widget-tool.ts:171); no approval gate"
 upstream-2026.7.2,image,media,no,read/transform,n/a,
-upstream-2026.7.2,exec,runtime,yes,execute,mediated,exec-approvals (default security=deny; approval bound to argv+cwd+agentId+envHash) + HTTP deny
+upstream-2026.7.2,exec,runtime,yes,execute,unmediated,exec-approvals (configurable: security=full disables approval entirely; B-rule does not count a gate an operator can turn off)
 upstream-2026.7.2,web_fetch,web,yes,network-egress,partial,"global SSRF dispatcher + fetch-guard (target restriction, not per-invocation approval)"
 upstream-2026.7.2,write,fs,yes,fs-write,partial,path scoping (workspaceOnly) + HTTP deny (fs_write); no approval on agent loop
 upstream-2026.7.2,edit,fs,yes,fs-write,partial,path scoping only
@@ -59,7 +59,7 @@ fork-2026.03,sessions_history,sessions,no,read,n/a,
 fork-2026.03,session_status,sessions,no,read,n/a,
 fork-2026.03,agents_list,agents,no,read,n/a,
 fork-2026.03,image,media,no,read/transform,n/a,
-fork-2026.03,exec,runtime,yes,execute,mediated,exec-approvals
+fork-2026.03,exec,runtime,yes,execute,unmediated,exec-approvals (configurable: security=full disables approval entirely; B-rule does not count a gate an operator can turn off)
 fork-2026.03,web_fetch,web,yes,network-egress,partial,"global SSRF dispatcher (target restriction, not per-invocation approval)"
 fork-2026.03,process,runtime,yes,execute,partial,inherits exec path; no independent gate
 fork-2026.03,write,fs,yes,fs-write,partial,path scoping + ACP approval
@@ -76,3 +76,28 @@ fork-2026.03,canvas,ui,yes,external-action,unmediated,trusted-operator surface
 fork-2026.03,message,messaging,yes,irreversible-external-send,unmediated,no gate in message-tool.ts
 fork-2026.03,nodes,nodes,yes,device-control,unmediated,none found
 fork-2026.03,tts,media,yes,fs-write,unmediated,none found
+fork-2026.03+retrofit,read,fs,no,read,n/a,
+fork-2026.03+retrofit,memory_search,memory,no,read,n/a,
+fork-2026.03+retrofit,memory_get,memory,no,read,n/a,
+fork-2026.03+retrofit,sessions_list,sessions,no,read,n/a,
+fork-2026.03+retrofit,sessions_history,sessions,no,read,n/a,
+fork-2026.03+retrofit,session_status,sessions,no,read,n/a,
+fork-2026.03+retrofit,agents_list,agents,no,read,n/a,
+fork-2026.03+retrofit,image,media,no,read/transform,n/a,
+fork-2026.03+retrofit,exec,runtime,yes,execute,mediated,"SecurityInterceptor.ts: unconditional HTTP-validator gate on invoke-system-run.ts:499, no config flag, fail-closed on timeout/error -- unlike native exec-approvals, has no off-switch"
+fork-2026.03+retrofit,web_fetch,web,yes,network-egress,partial,"global SSRF dispatcher (target restriction, not per-invocation approval)"
+fork-2026.03+retrofit,process,runtime,yes,execute,partial,inherits exec path; no independent gate
+fork-2026.03+retrofit,write,fs,yes,fs-write,partial,path scoping + ACP approval
+fork-2026.03+retrofit,edit,fs,yes,fs-write,partial,path scoping only
+fork-2026.03+retrofit,apply_patch,fs,yes,fs-write,partial,ACP approval only
+fork-2026.03+retrofit,web_search,web,yes,network-egress,partial,guarded fetch
+fork-2026.03+retrofit,sessions_send,sessions,yes,cross-session-injection,partial,HTTP deny + ACP approval
+fork-2026.03+retrofit,sessions_spawn,sessions,yes,spawn-agent,partial,HTTP deny + ACP approval + sandbox:require
+fork-2026.03+retrofit,browser,ui,yes,external-action,partial,optional sandbox
+fork-2026.03+retrofit,cron,automation,yes,persistence,partial,ownerOnly + HTTP deny
+fork-2026.03+retrofit,gateway,automation,yes,control-plane,partial,ownerOnly + HTTP deny + ACP approval
+fork-2026.03+retrofit,subagents,sessions,yes,spawn-agent,unmediated,none found
+fork-2026.03+retrofit,canvas,ui,yes,external-action,unmediated,trusted-operator surface
+fork-2026.03+retrofit,message,messaging,yes,irreversible-external-send,unmediated,no gate in message-tool.ts
+fork-2026.03+retrofit,nodes,nodes,yes,device-control,unmediated,none found
+fork-2026.03+retrofit,tts,media,yes,fs-write,unmediated,none found
