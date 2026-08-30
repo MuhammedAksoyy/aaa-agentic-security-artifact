@@ -3,9 +3,9 @@
  *
  * Motivation: the original interceptor (SecurityInterceptor.ts) was wired into a single
  * execution path (`system.run`), which left every other side-effecting tool ungated.
- * Measured mediation completeness of that placement was MC = 2/17 on the target system's
- * own tool surface (paper Section V-A) -- unchanged from baseline, since the shell-
- * execution tool was already mediated by the target system's own, independent exec-
+ * Measured mediation completeness of that placement was MC = 2/17 on OpenClaw's own
+ * tool surface (paper Section V-A) -- unchanged from baseline, since the shell-
+ * execution tool was already mediated by OpenClaw's own, independent exec-
  * approval mechanism. This module moves the same risk analysis to the boundary that
  * *every* tool already passes through (see `wrapToolWithBeforeToolCallHook` in
  * `src/agents/pi-tools.ts`), so a newly added tool is gated by construction rather than
@@ -48,6 +48,7 @@ const SIDE_EFFECTING_TOOLS = new Set<string>([
   "browser",
   "canvas",
   "screen",
+  "show_widget",
   "nodes",
   "computer",
   "mobile_ui",

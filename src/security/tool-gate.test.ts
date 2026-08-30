@@ -1,6 +1,12 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { AnyAgentTool } from "../agents/tools/common.js";
 import { getSecurityOrchestrator } from "./security-hitl.js";
-import { extractRiskSurface, gateToolCall, isSideEffectingTool } from "./tool-gate.js";
+import {
+  extractRiskSurface,
+  gateToolCall,
+  isSideEffectingTool,
+  wrapToolWithSecurityGate,
+} from "./tool-gate.js";
 
 /**
  * These tests encode the paper's central claim as executable assertions:
@@ -107,6 +113,41 @@ describe("tool gate — complete mediation", () => {
 
       const decision = await gate;
       expect(decision.allowed).toBe(true);
+    });
+  });
+
+  describe("provider-independent remaining-tool fixtures", () => {
+    const remainingTools = [
+      "code_execution",
+      "x_search",
+      "spawn_task",
+      "screen",
+      "show_widget",
+      "image_generate",
+      "music_generate",
+      "video_generate",
+    ];
+
+    it.each(remainingTools)("blocks %s before its executor is reached", async (toolName) => {
+      const execute = vi.fn().mockResolvedValue({ content: [], details: { reached: true } });
+      const oldEnabled = process.env.SECURITY_TOOL_GATE;
+      process.env.SECURITY_TOOL_GATE = "1";
+      try {
+        const tool = wrapToolWithSecurityGate({ name: toolName, execute } as unknown as AnyAgentTool);
+        const invocation = tool.execute("fixture-call", {
+          command: "rm -rf /fixture-target",
+          target: "fixture-target",
+        });
+        await waitForPending();
+        const [action] = getSecurityOrchestrator().getPendingActions();
+        expect(action).toBeDefined();
+        getSecurityOrchestrator().resolveApproval(action.actionId, false, "fixture");
+        await expect(invocation).rejects.toThrow("security gate: denied");
+        expect(execute).not.toHaveBeenCalled();
+      } finally {
+        if (oldEnabled === undefined) delete process.env.SECURITY_TOOL_GATE;
+        else process.env.SECURITY_TOOL_GATE = oldEnabled;
+      }
     });
   });
 });

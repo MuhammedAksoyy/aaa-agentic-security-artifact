@@ -1,17 +1,15 @@
 # Artifact: Security Cannot Be Retrofitted
 
 Companion artifact for the paper *"Security Cannot Be Retrofitted: An
-Authorization--Approval--Accountability Assessment of Agentic AI Systems"* (submitted to
-SINCONF 2026). This bundle contains the security components and benchmark suite described
+Authorization--Approval--Accountability Assessment of Agentic AI Systems"* (accepted with
+revision at SINCONF 2026). This bundle contains the security components and benchmark suite described
 in Sections V and VI, sufficient to reproduce every number reported in the paper's tables.
 
-**Anonymity note.** This artifact is a clean, standalone extraction of the paper's
-contribution -- it deliberately does not include the target system's full source tree
-(the target is a large, publicly available open-source agent gateway; including it here
-would both bloat this artifact and risk pointing reviewers at a specific fork whose commit
-history could reveal author identity). To reproduce, apply the two patches in `patches/`
-to a checkout of the target system version noted in the paper (or any sufficiently similar
-version -- see Limitations in the paper for how tool-surface size affects Mediation
+**Scope note.** This artifact is a clean, standalone extraction of the paper's
+contribution -- it deliberately does not include the full OpenClaw source tree, which would
+needlessly bloat the bundle. To reproduce, apply the two patches in `patches/` to a checkout
+of the OpenClaw version noted in the paper (or any sufficiently similar version -- see
+Limitations in the paper for how tool-surface size affects Mediation
 Completeness).
 
 ## Contents
@@ -26,10 +24,9 @@ src/
     tool-gate.ts          -- the relocated gate (Section V-B): the same detector,
                              wrapped at the target system's universal tool-invocation
                              boundary instead of the shell-execution path only.
-    tool-gate.test.ts     -- 10 tests exercising both shell and non-shell tools,
-                             including the message-tool case that has no shell syntax
-                             at all but is held for approval because it is classified
-                             as irreversible.
+    tool-gate.test.ts     -- 18 tests: 10 original shell/non-shell cases plus
+                             8 provider-independent fixtures for tools not directly
+                             instantiated in the test environment.
   node-host/
     SecurityInterceptor.ts -- the retrofit (Section V-A): blocks on an external
                              HTTP validator before allowing a shell command through.
@@ -52,6 +49,8 @@ benchmark/
                                (side-effecting?, mediated/partial/unmediated, gate
                                mechanism) for both the fork baseline and current
                                upstream version studied
+  d3-kappa-confusion-matrix.md -- raw pre-reconciliation contingency table and
+                                 calculation summary for Section III-A
   results-b0-b4.csv          -- raw per-command results for the five detection
                                configurations in Table IV
   run-b0-b4.mjs             -- reproduces Table IV (detection accuracy, B0-B4)
@@ -59,6 +58,8 @@ benchmark/
   mock-validator.mjs        -- minimal external validator for the retrofit's HTTP
                                round trip during reproduction (not a security control)
   d2-reproduction.log       -- raw output of the independent Windows reproduction
+
+vitest.config.ts             -- standalone test discovery for `src/**/*.test.ts`
 ```
 
 ## Reproducing the results
@@ -73,6 +74,18 @@ No target-system checkout is required for B0, B2, B3 (they only need
 ```bash
 node --import tsx benchmark/run-b0-b4.mjs
 ```
+
+### Targeted gate tests
+
+From the artifact root, run:
+
+```bash
+npx vitest run src/security/tool-gate.test.ts --reporter=dot
+```
+
+The suite has 18 tests: the original ten targeted cases and eight provider-independent
+fixtures. The fixtures establish fail-closed gate behavior for the eight tools that were
+not provider-backed instantiated; they do not establish provider activation.
 
 ### Table V -- latency
 
@@ -109,13 +122,16 @@ measurement only and does not include human approval time.
 
 ### Table VI -- Mediation Completeness
 
-`mediation.csv` is the raw classification data. The method (Section III-A): enumerate
-every tool the target system's core catalog defines, classify each as side-effecting or
+`mediation.csv` is the reconciled raw classification data. The method (Section III-A): enumerate
+every tool OpenClaw's core catalog defines, classify each as side-effecting or
 not, and for each side-effecting tool determine whether it passes through a mandatory
 gate on the agent's primary invocation loop (not merely a separate HTTP surface or an
 owner-only check). This is a manual classification task supported by, but not fully
 automated by, code search; see the paper's Section III-A and VI-A for the full rubric and
-inter-rater methodology.
+inter-rater methodology. The inventory counts logical tools: `cron` and `automations` are
+legacy/current aliases for one scheduling capability, although both strings remain in the
+gate's compatibility set. `d3-kappa-confusion-matrix.md` records the raw independent
+pre-reconciliation contingency table behind the reported $\kappa=0.209$.
 
 ### Verifying the artifact's detector matches the paper's numbers
 
@@ -127,7 +143,7 @@ Table IV exactly.
 
 ## What this artifact does not include
 
-- The target system's own source tree (patches assume you have your own checkout).
+- The OpenClaw source tree (patches assume you have your own checkout).
 - The external notifier and audit-logging components mentioned in `security-hitl.ts`'s
   module comment (Telegram-bot-style notifier, persistent audit log) -- these were never
   implemented in the studied system and are not claimed as contributions.
