@@ -24,9 +24,10 @@ src/
     tool-gate.ts          -- the relocated gate (Section V-B): the same detector,
                              wrapped at the target system's universal tool-invocation
                              boundary instead of the shell-execution path only.
-    tool-gate.test.ts     -- 18 tests: 10 original shell/non-shell cases plus
-                             8 provider-independent fixtures for tools not directly
-                             instantiated in the test environment.
+    tool-gate.test.ts     -- 20 tests: 10 original shell/non-shell cases, 8
+                             provider-independent fixtures for tools not directly
+                             instantiated in the test environment, and 2 tests
+                             isolating the gate's opt-in activation behavior.
   node-host/
     SecurityInterceptor.ts -- the retrofit (Section V-A): blocks on an external
                              HTTP validator before allowing a shell command through.
@@ -51,6 +52,8 @@ benchmark/
                                upstream version studied
   d3-kappa-confusion-matrix.md -- raw pre-reconciliation contingency table and
                                  calculation summary for Section III-A
+  d3-blind-ratings.csv       -- anonymized raw paired labels used to derive the matrix
+  compute-d3-kappa.py       -- recomputes n, agreement, expected agreement, and kappa
   results-b0-b4.csv          -- raw per-command results for the five detection
                                configurations in Table IV
   run-b0-b4.mjs             -- reproduces Table IV (detection accuracy, B0-B4)
@@ -83,9 +86,20 @@ From the artifact root, run:
 npx vitest run src/security/tool-gate.test.ts --reporter=dot
 ```
 
-The suite has 18 tests: the original ten targeted cases and eight provider-independent
-fixtures. The fixtures establish fail-closed gate behavior for the eight tools that were
-not provider-backed instantiated; they do not establish provider activation.
+The suite has 20 tests: the original ten targeted cases, eight provider-independent
+fixtures, and two tests that isolate the gate's activation behavior itself. The fixtures
+establish fail-closed gate behavior for the eight tools that were not provider-backed
+instantiated; they do not establish provider activation.
+
+**Gate activation is opt-in, not shipped-default.** `wrapToolWithSecurityGate` (see
+`src/security/tool-gate.ts`) only wraps a tool's `execute` when the environment variable
+`SECURITY_TOOL_GATE` is set to `"1"`. With the variable unset -- the default state of any
+checkout that has not explicitly set it -- every tool executes unmodified and the gate
+performs no interception at all. The paper's 17/17 and 24/32 coverage figures (Section V-B)
+describe this variable set to `1`; they are not a claim about what a fresh checkout runs
+without configuration. The two new tests above assert this directly: one confirms a tool
+executes untouched with the variable unset, the other confirms the same call is rejected
+before execution once it is set.
 
 ### Table V -- latency
 
@@ -131,7 +145,10 @@ automated by, code search; see the paper's Section III-A and VI-A for the full r
 inter-rater methodology. The inventory counts logical tools: `cron` and `automations` are
 legacy/current aliases for one scheduling capability, although both strings remain in the
 gate's compatibility set. `d3-kappa-confusion-matrix.md` records the raw independent
-pre-reconciliation contingency table behind the reported $\kappa=0.209$.
+pre-reconciliation contingency table behind the reported $\kappa=0.209$. The paired
+anonymized labels and a standalone reproduction script are included as
+`d3-blind-ratings.csv` and `compute-d3-kappa.py`; from this directory, run
+`python3 compute-d3-kappa.py`.
 
 ### Verifying the artifact's detector matches the paper's numbers
 

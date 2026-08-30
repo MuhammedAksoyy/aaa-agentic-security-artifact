@@ -9,8 +9,9 @@
  * approval mechanism. This module moves the same risk analysis to the boundary that
  * *every* tool already passes through (see `wrapToolWithBeforeToolCallHook` in
  * `src/agents/pi-tools.ts`), so a newly added tool is gated by construction rather than
- * by remembering to wire it. This relocation raises measured coverage to 17/17 on the
- * same tool surface (paper Section V-B).
+ * by remembering to wire it. With SECURITY_TOOL_GATE=1, this relocation provides configured
+ * boundary coverage of 17/17 on the same tool surface (paper Section V-B); the shipped
+ * default leaves the opt-in wrapper disabled.
  *
  * Differs from the plugin `before_tool_call` hook in one decisive respect: that hook is
  * fail-open (a throwing hook lets the call through). A security gate must be fail-closed.

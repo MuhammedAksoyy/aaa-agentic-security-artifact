@@ -116,6 +116,42 @@ describe("tool gate — complete mediation", () => {
     });
   });
 
+  describe("gate activation is opt-in, not shipped-default", () => {
+    it("does not wrap or intercept calls when SECURITY_TOOL_GATE is unset", async () => {
+      const execute = vi.fn().mockResolvedValue({ content: [], details: { reached: true } });
+      const oldEnabled = process.env.SECURITY_TOOL_GATE;
+      delete process.env.SECURITY_TOOL_GATE;
+      try {
+        const tool = wrapToolWithSecurityGate({ name: "exec", execute } as unknown as AnyAgentTool);
+        const result = await tool.execute("fixture-call", { command: "rm -rf /fixture-target" });
+        expect(execute).toHaveBeenCalledTimes(1);
+        expect((result as { details: { reached: boolean } }).details.reached).toBe(true);
+        expect(getSecurityOrchestrator().pendingCount).toBe(0);
+      } finally {
+        if (oldEnabled === undefined) delete process.env.SECURITY_TOOL_GATE;
+        else process.env.SECURITY_TOOL_GATE = oldEnabled;
+      }
+    });
+
+    it("blocks the same risky call before execution once SECURITY_TOOL_GATE=1 is set", async () => {
+      const execute = vi.fn().mockResolvedValue({ content: [], details: { reached: true } });
+      const oldEnabled = process.env.SECURITY_TOOL_GATE;
+      process.env.SECURITY_TOOL_GATE = "1";
+      try {
+        const tool = wrapToolWithSecurityGate({ name: "exec", execute } as unknown as AnyAgentTool);
+        const invocation = tool.execute("fixture-call", { command: "rm -rf /fixture-target" });
+        await waitForPending();
+        const [action] = getSecurityOrchestrator().getPendingActions();
+        getSecurityOrchestrator().resolveApproval(action.actionId, false, "fixture");
+        await expect(invocation).rejects.toThrow("security gate: denied");
+        expect(execute).not.toHaveBeenCalled();
+      } finally {
+        if (oldEnabled === undefined) delete process.env.SECURITY_TOOL_GATE;
+        else process.env.SECURITY_TOOL_GATE = oldEnabled;
+      }
+    });
+  });
+
   describe("provider-independent remaining-tool fixtures", () => {
     const remainingTools = [
       "code_execution",
